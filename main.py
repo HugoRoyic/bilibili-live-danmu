@@ -5,10 +5,11 @@ import random
 import socket
 import struct
 import sqlite3
+import datetime
 import requests
 import threading
 import atexit
-
+from kitchen.text.display import textual_width_fill
 
 from items import DanMu
 from config import CONFIG
@@ -160,11 +161,11 @@ class DanMuJi:
         def get():
             while True:
                 for data in self.socket_recv():
-                    self.deal(*data)
+                    self.handle(*data)
         self._thread = threading.Thread(target=get, daemon=True)
         self._thread.start()
 
-    def deal(self, version, msg_type, data):
+    def handle(self, version, msg_type, data):
         if msg_type == TYPE_SERVER_AUTH:
             print("服务器认证通过")
         elif msg_type == TYPE_SERVER_HEARTBEAT:
@@ -173,34 +174,38 @@ class DanMuJi:
         elif msg_type == TYPE_SERVER_INFO:
             data = json.loads(data)
             cmd = data.get("cmd")
-            if cmd == "STOP_LIVE_ROOM_LIST" or "NOTICE_MSG":
-                print(data)
-            elif cmd == "DANMU_MSG":
+            if cmd == "DANMU_MSG":
                 info = data.get("info")
-                content = info[1]
-                user_info = info[2]
-                medal_info = info[3]
-                print(content, user_info, medal_info)
+                text = info[1]
+                
+                uid, nickname = info[2][:2]
+                medal_level, medal, medal_owner = info[3][:3] or ['  '] * 3
+                tsct = info[9]
+                ts = tsct["ts"]
+                ct = tsct["ct"]
+                date_time = datetime.datetime.fromtimestamp(ts).isoformat(' ')
+                d = DanMu()
+                d["ts"] = ts
+                d["ct"] = ct
+                d["uid"] = uid
+                d["nickname"] = nickname
+                d["text"] = text
+                d["date"], d["time"] = date_time.split()
+                self.save(d)
+                print(date_time, '|' ,textual_width_fill(medal, 6), f'{medal_level:3}', '|', f'[{nickname}]: ', text)
+            elif cmd == "STOP_LIVE_ROOM_LIST" or "NOTICE_MSG":
+                return
             elif cmd == "ONLINE_RANK_COUNT":
                 print("高能榜人数:", data["data"]["count"])
             elif cmd == "ONLINE_RANK_V2":
                 print(data["data"]["list"])
+            elif cmd.startswith("ONLINE_RANK_TOP"):
+                print(data)
             elif cmd == "WATCHED_CHANGE":
                 print(data["data"]["text_large"])
             else:
                 print(data)
             
-    # def get(self):
-    #     response = requests.get(url=self.GET_URL, headers=self.headers, params={"roomid": self.roomid})
-    #     datapack = json.loads(response.content)
-    #     cards = heapq.merge(datapack["data"]["admin"] + datapack["data"]["room"], key=lambda x: x["check_info"]["ts"])
-    #     for card in cards:
-    #         d = DanMu(**card)
-    #         if d not in self._cache:
-    #             print(d)
-    #             self._cache.add(d)
-    #             self.save(d)
-
     def send_danmu(self, msg):
         data = {"bubble": 0,
                 "msg": msg,

@@ -48,17 +48,6 @@ class DanMu(Item):
     date = Field()
     time = Field()
 
-    def __init__(self, **kwargs):
-        super().__init__()
-        self["ts"] = kwargs["check_info"]["ts"]
-        self["ct"] = int(kwargs["check_info"]["ct"], 16)
-        self["text"] = kwargs.get("text")
-        self["uid"] = kwargs.get("uid")
-        self["nickname"] = kwargs.get("nickname")
-
-        timeline = kwargs.get("timeline") or datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self["date"], self["time"] = timeline.split()
-
     def __eq__(self, obj):
         return self["ts"] == obj["ts"] and self["ct"] == obj["ct"]
 
