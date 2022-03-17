@@ -5,6 +5,7 @@
 config.py
 
 # test
+.qt_for_python/
 *.ipynb
 
 # Byte-compiled / optimized / DLL files
