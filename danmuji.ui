@@ -19,14 +19,17 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QFrame {
+	border: 0px;
+	background-color: #191919;
+}
+
+
+</string>
   </property>
   <widget class="QWidget" name="MainWindowWidget">
    <property name="styleSheet">
-    <string notr="true">
-
-background-color: #191919;
-</string>
+    <string notr="true"/>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
@@ -50,8 +53,7 @@ background-color: #191919;
        <bool>false</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">border: 0px;
-border-radius: 10px;
+       <string notr="true">border-radius: 10px;
 </string>
       </property>
       <property name="frameShape">
@@ -68,16 +70,16 @@ border-radius: 10px;
         <number>0</number>
        </property>
        <property name="leftMargin">
-        <number>9</number>
+        <number>6</number>
        </property>
        <property name="topMargin">
-        <number>9</number>
+        <number>6</number>
        </property>
        <property name="rightMargin">
-        <number>9</number>
+        <number>6</number>
        </property>
        <property name="bottomMargin">
-        <number>9</number>
+        <number>0</number>
        </property>
        <item>
         <widget class="QFrame" name="TitleBarFrame">
@@ -145,7 +147,7 @@ border-radius: 10px;
                 <string notr="true">color: #a8b2b6;</string>
                </property>
                <property name="text">
-                <string>Untitled</string>
+                <string>弹幕姬</string>
                </property>
               </widget>
              </item>
@@ -334,7 +336,11 @@ QPushButton:hover {
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QListView" name="DanMuListView"/>
+                 <widget class="QListView" name="DanMuListView">
+                  <property name="movement">
+                   <enum>QListView::Free</enum>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <widget class="QFrame" name="DanMuEditFrame">
@@ -558,7 +564,11 @@ QPushButton:hover {
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QTextBrowser" name="HistoryBrowser"/>
+                 <widget class="QTableWidget" name="HistoryTableWidget">
+                  <property name="sortingEnabled">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -587,13 +597,25 @@ QPushButton:hover {
           <property name="spacing">
            <number>0</number>
           </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QLabel" name="StatusLabel">
             <property name="styleSheet">
              <string notr="true">color: #a8b2b6;</string>
             </property>
             <property name="text">
-             <string>Execute Status</string>
+             <string/>
             </property>
            </widget>
           </item>

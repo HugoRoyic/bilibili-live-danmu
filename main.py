@@ -1,10 +1,6 @@
-from PySide6.QtWidgets import QApplication
+from app import DanMuJiApp
 
-from HeadlessMainWindow import HeadlessMainWindow
 
 if __name__ == "__main__":
-    app = QApplication()
-    window = HeadlessMainWindow()
-    window.uiInitialize()
-    window.show()
-    app.exec()
+    d = DanMuJiApp()
+    d.exec()

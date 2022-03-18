@@ -41,11 +41,11 @@ class HeadlessMainWindow(QMainWindow):
         if not self.SHOW_STATE:
             self.showMaximized()
             self.SHOW_STATE = MAXIMIZED
-            self.ui.MainWindowFrame.setStyleSheet("background-color: #191919;border: 0px;border-radius: 0px;")
+            self.ui.MainWindowFrame.setStyleSheet("border-radius: 0px;")
         else:
             self.showNormal()
             self.SHOW_STATE = NORMAL
-            self.ui.MainWindowFrame.setStyleSheet("background-color: #191919;border: 0px;border-radius: 10px;")
+            self.ui.MainWindowFrame.setStyleSheet("border-radius: 10px;")
 
 
 if __name__ == "__main__":    

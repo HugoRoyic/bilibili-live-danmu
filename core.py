@@ -1,5 +1,6 @@
 import json
 # import zlib
+import queue
 import brotli
 import random
 import socket
@@ -12,7 +13,6 @@ import atexit
 from kitchen.text.display import textual_width_fill
 
 from items import DanMu
-from config import CONFIG
 
 # 头部各数据字节长度
 BYTES_TOTAL = 4
@@ -35,7 +35,7 @@ TYPE_CLIENT_AUTH = 7
 TYPE_SERVER_AUTH = 8
 
 
-class DanMuJi:
+class DanMuJiCore:
     SEND_URL = "https://api.live.bilibili.com/msg/send"
     ROOM_URL = "https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom"
     CONF_URL = "https://api.live.bilibili.com/room/v1/Danmu/getConf"
@@ -61,13 +61,17 @@ class DanMuJi:
         self._cursor = None
         # socket connect
         self._socket = None
+        # pipeline
+        self.pipe = queue.Queue()
 
     def start(self):
         self.get_room_info()
         self.get_room_conf()
         self.get_db_connect()
         self.get_socket_connect()
-        self.get_danmu()
+        self._getting = True
+        self._danmu_enqueue_thread = threading.Thread(target=self.danmu_enqueue, daemon=True)
+        self._danmu_enqueue_thread.start()
 
     def get_room_info(self):
         response = requests.get(self.ROOM_URL, headers=self.headers, params={"room_id": self.roomid})
@@ -152,32 +156,32 @@ class DanMuJi:
         message = self._socket.recv(length-CONST_HEADER, socket.MSG_WAITALL)
 
         if version == VERSION_ZIPPED:
-            for data in DanMuJi.unpack_packets(brotli.decompress(message)):
+            for data in DanMuJiCore.unpack_packets(brotli.decompress(message)):
                 yield data
         else:
             yield version, msg_type, message
 
-    def get_danmu(self):
-        def get():
-            while True:
-                for data in self.socket_recv():
-                    self.handle(*data)
-        self._thread = threading.Thread(target=get, daemon=True)
-        self._thread.start()
+    def danmu_enqueue(self):
+        while self._getting:
+            for data in self.socket_recv():
+                self.pipe.put(self.handle(*data))
+
+    # def danmu_dequeue(self):
+    #     if not self.pipe.empty():
+    #         return self.pipe.get()
 
     def handle(self, version, msg_type, data):
         if msg_type == TYPE_SERVER_AUTH:
-            print("服务器认证通过")
+            return {"code": 0, "msg": "服务器认证通过"}
         elif msg_type == TYPE_SERVER_HEARTBEAT:
             if version == VERSION_HEARTBEAT:
-                print("当前房间人气值", int.from_bytes(data, 'big'))
+                return {"code": 1, "msg": data}
         elif msg_type == TYPE_SERVER_INFO:
             data = json.loads(data)
             cmd = data.get("cmd")
             if cmd == "DANMU_MSG":
                 info = data.get("info")
                 text = info[1]
-                
                 uid, nickname = info[2][:2]
                 medal_level, medal, medal_owner = info[3][:3] or ['  '] * 3
                 tsct = info[9]
@@ -192,20 +196,22 @@ class DanMuJi:
                 d["text"] = text
                 d["date"], d["time"] = date_time.split()
                 self.save(d)
-                print(date_time, '|' ,textual_width_fill(medal, 6), f'{medal_level:3}', '|', f'[{nickname}]: ', text)
+                return {"code": 3, "msg": "", "meta": [medal, medal_level, medal_owner, d]}
             elif cmd == "STOP_LIVE_ROOM_LIST" or "NOTICE_MSG":
                 return
             elif cmd == "ONLINE_RANK_COUNT":
-                print("高能榜人数:", data["data"]["count"])
+                return {"code": 4}
             elif cmd == "ONLINE_RANK_V2":
-                print(data["data"]["list"])
+                return {"code": 5}
+                # print(data["data"]["list"])
             elif cmd.startswith("ONLINE_RANK_TOP"):
-                print(data)
+                return {"code": 6}
             elif cmd == "WATCHED_CHANGE":
-                print(data["data"]["text_large"])
+                return {"code": 7}
+                # print(data["data"]["text_large"])
             else:
-                print(data)
-            
+                return {"code": 8}
+
     def send_danmu(self, msg):
         data = {"bubble": 0,
                 "msg": msg,
@@ -218,9 +224,10 @@ class DanMuJi:
                 "csrf_token": self.csrf}
         response = requests.post(self.SEND_URL, data=data, cookies={"Cookie": self.cookies})
         result = json.loads(response.content)
-        if result["code"] != 0:
-            # {'code': 10031, 'data': [], 'message': '您发送弹幕的频率过快', 'msg': '您发送弹幕的频率过快'}
-            print(f"发送【{msg}】失败")
+        return result
+        # if result["code"] != 0:
+        #     {'code': 10031, 'data': [], 'message': '您发送弹幕的频率过快', 'msg': '您发送弹幕的频率过快'}
+        #     return(f"发送【{msg}】失败")
 
     def save(self, danmu):
         keys = ','.join(danmu.keys())
@@ -229,12 +236,16 @@ class DanMuJi:
         self._connect.commit()
 
     def stop(self):
+        self._getting = False
         self._heartbeat.cancel()
         self._connect.close()
 
 
 if __name__ == "__main__":
-    c = DanMuJi(CONFIG)
+    from config import CONFIG
+
+    c = DanMuJiCore(CONFIG)
     c.start()
+    c.danmu_dequeue()
 
     atexit.register(c.stop)

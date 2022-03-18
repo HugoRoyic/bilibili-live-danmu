@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'danmujinQGQnV.ui'
+## Form generated from reading UI file 'danmujiNaGjyb.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.3
 ##
@@ -15,18 +15,30 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QListView, QMainWindow, QPushButton,
-    QSizePolicy, QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QFrame,
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QListView, QMainWindow, QPushButton, QSizePolicy,
+    QTableWidget, QTableWidgetItem, QTextBrowser, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(917, 709)
-        MainWindow.setStyleSheet(u"")
+        font = QFont()
+        font.setFamilies([u"Sarasa Fixed SC"])
+        MainWindow.setFont(font)
+        MainWindow.setStyleSheet(u"QFrame {\n"
+"	border: 0px;\n"
+"	background-color: #191919;\n"
+"}\n"
+"\n"
+"\n"
+"")
         self.MainWindowWidget = QWidget(MainWindow)
         self.MainWindowWidget.setObjectName(u"MainWindowWidget")
+        self.MainWindowWidget.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(self.MainWindowWidget)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -34,9 +46,7 @@ class Ui_MainWindow(object):
         self.MainWindowFrame = QFrame(self.MainWindowWidget)
         self.MainWindowFrame.setObjectName(u"MainWindowFrame")
         self.MainWindowFrame.setAutoFillBackground(False)
-        self.MainWindowFrame.setStyleSheet(u"background-color: #191919;\n"
-"border: 0px;\n"
-"border-radius: 10px;\n"
+        self.MainWindowFrame.setStyleSheet(u"border-radius: 10px;\n"
 "")
         self.MainWindowFrame.setFrameShape(QFrame.NoFrame)
         self.MainWindowFrame.setFrameShadow(QFrame.Raised)
@@ -44,10 +54,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QVBoxLayout(self.MainWindowFrame)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(9, 9, 9, 9)
+        self.verticalLayout_2.setContentsMargins(6, 6, 6, 0)
         self.TitleBarFrame = QFrame(self.MainWindowFrame)
         self.TitleBarFrame.setObjectName(u"TitleBarFrame")
-        self.TitleBarFrame.setMaximumSize(QSize(16777215, 20))
+        self.TitleBarFrame.setMinimumSize(QSize(0, 25))
+        self.TitleBarFrame.setMaximumSize(QSize(16777215, 25))
         self.TitleBarFrame.setFrameShape(QFrame.NoFrame)
         self.TitleBarFrame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.TitleBarFrame)
@@ -61,7 +72,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QHBoxLayout(self.TitleTextFrame)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_3.setContentsMargins(9, 0, 0, 0)
         self.TitleLabel = QLabel(self.TitleTextFrame)
         self.TitleLabel.setObjectName(u"TitleLabel")
         self.TitleLabel.setStyleSheet(u"color: #a8b2b6;")
@@ -145,6 +156,14 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.DanMuListView = QListView(self.DanMuFrame)
         self.DanMuListView.setObjectName(u"DanMuListView")
+        self.DanMuListView.setStyleSheet(u"color: white;")
+        self.DanMuListView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.DanMuListView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.DanMuListView.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.DanMuListView.setDragEnabled(True)
+        self.DanMuListView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.DanMuListView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.DanMuListView.setMovement(QListView.Free)
 
         self.verticalLayout_4.addWidget(self.DanMuListView)
 
@@ -262,10 +281,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.setSpacing(0)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.HistoryBrowser = QTextBrowser(self.HistoryFrame)
-        self.HistoryBrowser.setObjectName(u"HistoryBrowser")
+        self.HistoryTableWidget = QTableWidget(self.HistoryFrame)
+        self.HistoryTableWidget.setObjectName(u"HistoryTableWidget")
+        self.HistoryTableWidget.setSortingEnabled(True)
 
-        self.verticalLayout_7.addWidget(self.HistoryBrowser)
+        self.verticalLayout_7.addWidget(self.HistoryTableWidget)
 
 
         self.horizontalLayout_5.addWidget(self.HistoryFrame)
@@ -278,15 +298,21 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.ContentFrame)
 
-        self.BottomLineFrame = QHBoxLayout()
+        self.horizontalFrame = QFrame(self.MainWindowFrame)
+        self.horizontalFrame.setObjectName(u"horizontalFrame")
+        self.horizontalFrame.setMinimumSize(QSize(0, 25))
+        self.horizontalFrame.setMaximumSize(QSize(16777215, 25))
+        self.BottomLineFrame = QHBoxLayout(self.horizontalFrame)
         self.BottomLineFrame.setSpacing(0)
         self.BottomLineFrame.setObjectName(u"BottomLineFrame")
-        self.StatusLabel = QLabel(self.MainWindowFrame)
+        self.BottomLineFrame.setContentsMargins(0, 0, 0, 0)
+        self.StatusLabel = QLabel(self.horizontalFrame)
         self.StatusLabel.setObjectName(u"StatusLabel")
+        self.StatusLabel.setStyleSheet(u"color: #a8b2b6;")
 
         self.BottomLineFrame.addWidget(self.StatusLabel)
 
-        self.GripFrame = QFrame(self.MainWindowFrame)
+        self.GripFrame = QFrame(self.horizontalFrame)
         self.GripFrame.setObjectName(u"GripFrame")
         self.GripFrame.setMinimumSize(QSize(16, 16))
         self.GripFrame.setMaximumSize(QSize(16, 16))
@@ -296,7 +322,7 @@ class Ui_MainWindow(object):
         self.BottomLineFrame.addWidget(self.GripFrame)
 
 
-        self.verticalLayout_2.addLayout(self.BottomLineFrame)
+        self.verticalLayout_2.addWidget(self.horizontalFrame)
 
 
         self.verticalLayout.addWidget(self.MainWindowFrame)
@@ -310,11 +336,11 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.TitleLabel.setText(QCoreApplication.translate("MainWindow", u"Untitled", None))
+        self.TitleLabel.setText(QCoreApplication.translate("MainWindow", u"\u5f39\u5e55\u59ec", None))
         self.MinimizeButton.setText("")
         self.MaximizeButton.setText("")
         self.CloseButton.setText("")
         self.DanMuSendButton.setText(QCoreApplication.translate("MainWindow", u"\u53d1\u9001", None))
-        self.StatusLabel.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.StatusLabel.setText("")
     # retranslateUi
 
