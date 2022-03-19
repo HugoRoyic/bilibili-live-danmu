@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'danmujizKWGVU.ui'
+## Form generated from reading UI file 'danmujiHfFJJa.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.3
 ##
@@ -54,17 +54,17 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QVBoxLayout(self.MainWindowFrame)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(6, 6, 6, 0)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.TitleBarFrame = QFrame(self.MainWindowFrame)
         self.TitleBarFrame.setObjectName(u"TitleBarFrame")
-        self.TitleBarFrame.setMinimumSize(QSize(0, 25))
-        self.TitleBarFrame.setMaximumSize(QSize(16777215, 25))
+        self.TitleBarFrame.setMinimumSize(QSize(0, 30))
+        self.TitleBarFrame.setMaximumSize(QSize(16777215, 30))
         self.TitleBarFrame.setFrameShape(QFrame.NoFrame)
         self.TitleBarFrame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.TitleBarFrame)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setContentsMargins(0, 6, 0, 0)
         self.TitleTextFrame = QFrame(self.TitleBarFrame)
         self.TitleTextFrame.setObjectName(u"TitleTextFrame")
         self.TitleTextFrame.setFrameShape(QFrame.StyledPanel)
@@ -72,9 +72,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QHBoxLayout(self.TitleTextFrame)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalLayout_3.setContentsMargins(9, 0, 0, 0)
+        self.horizontalLayout_3.setContentsMargins(6, 0, 0, 0)
         self.TitleLabel = QLabel(self.TitleTextFrame)
         self.TitleLabel.setObjectName(u"TitleLabel")
+        font1 = QFont()
+        font1.setPointSize(10)
+        self.TitleLabel.setFont(font1)
         self.TitleLabel.setStyleSheet(u"color: #a8b2b6;")
 
         self.horizontalLayout_3.addWidget(self.TitleLabel)
@@ -84,10 +87,10 @@ class Ui_MainWindow(object):
 
         self.TitleButtonFrame = QFrame(self.TitleBarFrame)
         self.TitleButtonFrame.setObjectName(u"TitleButtonFrame")
-        self.TitleButtonFrame.setMaximumSize(QSize(100, 16777215))
+        self.TitleButtonFrame.setMaximumSize(QSize(90, 16777215))
         self.TitleButtonFrame.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
-"	border-radius: 8px;\n"
+"	border-radius: 9px;\n"
 "	background-color: #333333;\n"
 "}\n"
 "QPushButton:hover {\n"
@@ -101,22 +104,22 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.MinimizeButton = QPushButton(self.TitleButtonFrame)
         self.MinimizeButton.setObjectName(u"MinimizeButton")
-        self.MinimizeButton.setMinimumSize(QSize(16, 16))
-        self.MinimizeButton.setMaximumSize(QSize(16, 16))
+        self.MinimizeButton.setMinimumSize(QSize(18, 18))
+        self.MinimizeButton.setMaximumSize(QSize(18, 18))
 
         self.horizontalLayout_2.addWidget(self.MinimizeButton)
 
         self.MaximizeButton = QPushButton(self.TitleButtonFrame)
         self.MaximizeButton.setObjectName(u"MaximizeButton")
-        self.MaximizeButton.setMinimumSize(QSize(16, 16))
-        self.MaximizeButton.setMaximumSize(QSize(16, 16))
+        self.MaximizeButton.setMinimumSize(QSize(18, 18))
+        self.MaximizeButton.setMaximumSize(QSize(18, 18))
 
         self.horizontalLayout_2.addWidget(self.MaximizeButton)
 
         self.CloseButton = QPushButton(self.TitleButtonFrame)
         self.CloseButton.setObjectName(u"CloseButton")
-        self.CloseButton.setMinimumSize(QSize(16, 16))
-        self.CloseButton.setMaximumSize(QSize(16, 16))
+        self.CloseButton.setMinimumSize(QSize(18, 18))
+        self.CloseButton.setMaximumSize(QSize(18, 18))
 
         self.horizontalLayout_2.addWidget(self.CloseButton)
 
@@ -132,12 +135,12 @@ class Ui_MainWindow(object):
         self.ContentFrame = QFrame(self.MainWindowFrame)
         self.ContentFrame.setObjectName(u"ContentFrame")
         self.ContentFrame.setStyleSheet(u"border-radius: 0px;")
-        self.ContentFrame.setFrameShape(QFrame.StyledPanel)
+        self.ContentFrame.setFrameShape(QFrame.NoFrame)
         self.ContentFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.ContentFrame)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_3.setContentsMargins(6, 0, 6, 0)
         self.TopFrame = QFrame(self.ContentFrame)
         self.TopFrame.setObjectName(u"TopFrame")
         self.TopFrame.setFrameShape(QFrame.StyledPanel)
@@ -148,6 +151,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.DanMuFrame = QFrame(self.TopFrame)
         self.DanMuFrame.setObjectName(u"DanMuFrame")
+        font2 = QFont()
+        font2.setPointSize(9)
+        self.DanMuFrame.setFont(font2)
         self.DanMuFrame.setFrameShape(QFrame.StyledPanel)
         self.DanMuFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.DanMuFrame)
@@ -156,19 +162,27 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.DanMuListView = QListView(self.DanMuFrame)
         self.DanMuListView.setObjectName(u"DanMuListView")
+        font3 = QFont()
+        font3.setPointSize(11)
+        self.DanMuListView.setFont(font3)
         self.DanMuListView.setLayoutDirection(Qt.LeftToRight)
-        self.DanMuListView.setStyleSheet(u"color: white;")
+        self.DanMuListView.setStyleSheet(u"color: #c2c2c2;")
         self.DanMuListView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.DanMuListView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.DanMuListView.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.DanMuListView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.DanMuListView.setDragEnabled(True)
+        self.DanMuListView.setDragEnabled(False)
+        self.DanMuListView.setDragDropMode(QAbstractItemView.NoDragDrop)
+        self.DanMuListView.setDefaultDropAction(Qt.IgnoreAction)
         self.DanMuListView.setAlternatingRowColors(False)
+        self.DanMuListView.setSelectionMode(QAbstractItemView.NoSelection)
         self.DanMuListView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.DanMuListView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.DanMuListView.setMovement(QListView.Free)
+        self.DanMuListView.setMovement(QListView.Static)
+        self.DanMuListView.setFlow(QListView.TopToBottom)
         self.DanMuListView.setProperty("isWrapping", False)
         self.DanMuListView.setLayoutMode(QListView.SinglePass)
+        self.DanMuListView.setViewMode(QListView.ListMode)
         self.DanMuListView.setWordWrap(True)
 
         self.verticalLayout_4.addWidget(self.DanMuListView)
@@ -300,8 +314,8 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.BottomFrame)
 
-        self.verticalLayout_3.setStretch(0, 1)
-        self.verticalLayout_3.setStretch(1, 1)
+        self.verticalLayout_3.setStretch(0, 3)
+        self.verticalLayout_3.setStretch(1, 2)
 
         self.verticalLayout_2.addWidget(self.ContentFrame)
 

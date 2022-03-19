@@ -31,13 +31,14 @@ class HeadlessMainWindow(QMainWindow):
     def uiInitialize(self):
         self.setWindowFlag(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        self.ui.TitleBarFrame.mouseDoubleClickEvent = self.maximizeRestore
         self.ui.MaximizeButton.clicked.connect(self.maximizeRestore)
         self.ui.MinimizeButton.clicked.connect(self.showMinimized)
         self.ui.CloseButton.clicked.connect(self.close)
         self.sizegrip = QSizeGrip(self.ui.GripFrame)
         # self.sizegrip.setStyleSheet("bottom: 0px;right:0px;")
 
-    def maximizeRestore(self):
+    def maximizeRestore(self, event=None):
         if not self.SHOW_STATE:
             self.showMaximized()
             self.SHOW_STATE = MAXIMIZED

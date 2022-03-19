@@ -88,13 +88,11 @@ class DanMuJiCore:
         self._cursor.execute("""
         CREATE TABLE IF NOT EXISTS "danmu" (
             "ts"	INTEGER,
-            "ct"	INTEGER,
             "uid"	INTEGER,
             "nickname"	TEXT NOT NULL,
             "text"	TEXT NOT NULL,
             "date"	TEXT,
-            "time"	TEXT,
-            PRIMARY KEY("ts", "ct")
+            "time"	TEXT
         )""")
 
     def get_socket_connect(self):
@@ -163,37 +161,33 @@ class DanMuJiCore:
                 pipe.put(self.handle(*data))
 
     def handle(self, version, msg_type, data):
-        if msg_type == TYPE_SERVER_AUTH:
-            return {"code": 0, "msg": "服务器认证通过"}
-        elif msg_type == TYPE_SERVER_HEARTBEAT:
-            if version == VERSION_HEARTBEAT:
-                # struct.unpack("!I", data)[0]
-                return {"code": 1, "msg": int.from_bytes(data, "big")}
-            else:
-                return {"code": 10, "msg": data}
-        elif msg_type == TYPE_SERVER_INFO:
+        if msg_type == TYPE_SERVER_INFO:
             data = json.loads(data)
             cmd = data.get("cmd")
             if cmd == "DANMU_MSG":
                 info = data.get("info")
-                text = info[1]
+                ts = info[9]["ts"]
                 uid, nickname = info[2][:2]
-                medal_level, medal, medal_owner = info[3][:3] or ['  '] * 3
-                tsct = info[9]
-                ts = tsct["ts"]
-                ct = tsct["ct"]
-                date_time = datetime.datetime.fromtimestamp(ts).isoformat(' ')
-                d = DanMu()
-                d["ts"] = ts
-                d["ct"] = ct
-                d["uid"] = uid
-                d["nickname"] = nickname
-                d["text"] = text
-                d["date"], d["time"] = date_time.split()
+                text = info[1]
+                date, time = datetime.datetime.fromtimestamp(ts).isoformat(' ').split()
+                d = DanMu(ts=ts, uid=uid, nickname=nickname, text=text, date=date, time=time)
                 self.save(d)
-                return {"code": 3, "msg": str(d), "meta": [medal, medal_level, medal_owner, d]}
+
+                if info[3]:
+                    # medal_level, medal, medal_owner = info[3][:3]
+                    medal_level, medal = info[3][:2]
+                    return {"code": 2,
+                            "data": {"medal": f"{medal}{medal_level}",
+                                     "nickname": nickname,
+                                     "text": text}
+                            }
+                else:
+                    return {"code": 2,
+                            "data": {"nickname": nickname,
+                                     "text": text}
+                            }
             elif cmd == "STOP_LIVE_ROOM_LIST" or "NOTICE_MSG":
-                return
+                return {"code": 3}
             elif cmd == "ONLINE_RANK_COUNT":
                 return {"code": 4}
             elif cmd == "ONLINE_RANK_V2":
@@ -204,10 +198,18 @@ class DanMuJiCore:
             elif cmd == "WATCHED_CHANGE":
                 return {"code": 7}
                 # print(data["data"]["text_large"])
-            else:
+            elif cmd == "INTERACT_WORD":
                 return {"code": 8}
-        else:
-            return {"code": 9, "msg": msg_type}
+            else:
+                return {"code": 9}
+        elif msg_type == TYPE_SERVER_HEARTBEAT:
+            return {"code": 1,
+                    "data": {"info": f"receive hearbeat {int.from_bytes(data, 'big')}"}
+                    }
+        elif msg_type == TYPE_SERVER_AUTH:
+            return {"code": 0,
+                    "data": {"info": "服务器认证通过"}
+                    }
 
     def send_danmu(self, msg):
         data = {"bubble": 0,
@@ -252,6 +254,6 @@ if __name__ == "__main__":
         while True:
             item = pipe.get()
             if item:
-                print(item.get("msg"))
+                print(item)
     thread = threading.Thread(target=handler, args=(q,), daemon=True)
     thread.start()

@@ -1,3 +1,6 @@
+from typing import overload
+
+
 class Field:
     pass
 
@@ -38,18 +41,19 @@ class Item(metaclass=ItemMeta):
 
 class DanMu(Item):
     ts = Field()
-    ct = Field()
     uid = Field()
     nickname = Field()
     text = Field()
     date = Field()
     time = Field()
 
+    def __init__(self, **kwargs):
+        super().__init__()
+        for key in kwargs:
+            self[key] = kwargs[key]
+
     def __eq__(self, obj):
         return self["ts"] == obj["ts"] and self["ct"] == obj["ct"]
-
-    def __hash__(self):
-        return self["ct"]
 
     def __str__(self):
         return f"""{self["date"]} {self["time"]} | {self["nickname"]}: {self["text"]}"""
