@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'danmujiNaGjyb.ui'
+## Form generated from reading UI file 'danmujizKWGVU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.3
 ##
@@ -156,14 +156,20 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.DanMuListView = QListView(self.DanMuFrame)
         self.DanMuListView.setObjectName(u"DanMuListView")
+        self.DanMuListView.setLayoutDirection(Qt.LeftToRight)
         self.DanMuListView.setStyleSheet(u"color: white;")
         self.DanMuListView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.DanMuListView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.DanMuListView.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.DanMuListView.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.DanMuListView.setDragEnabled(True)
+        self.DanMuListView.setAlternatingRowColors(False)
         self.DanMuListView.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.DanMuListView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.DanMuListView.setMovement(QListView.Free)
+        self.DanMuListView.setProperty("isWrapping", False)
+        self.DanMuListView.setLayoutMode(QListView.SinglePass)
+        self.DanMuListView.setWordWrap(True)
 
         self.verticalLayout_4.addWidget(self.DanMuListView)
 
@@ -218,6 +224,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.AudienceListView = QListView(self.AudienceFrame)
         self.AudienceListView.setObjectName(u"AudienceListView")
+        self.AudienceListView.setMovement(QListView.Free)
 
         self.verticalLayout_5.addWidget(self.AudienceListView)
 

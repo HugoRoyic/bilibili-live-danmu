@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QSizeGrip
+from PySide6.QtWidgets import QMainWindow, QSizeGrip
 from PySide6 import QtCore
 
 from ui_danmuji import Ui_MainWindow

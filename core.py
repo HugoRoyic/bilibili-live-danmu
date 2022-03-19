@@ -1,5 +1,4 @@
 import json
-# import zlib
 import queue
 import brotli
 import random
@@ -9,8 +8,7 @@ import sqlite3
 import datetime
 import requests
 import threading
-import atexit
-from kitchen.text.display import textual_width_fill
+# from kitchen.text.display import textual_width_fill
 
 from items import DanMu
 
@@ -61,17 +59,6 @@ class DanMuJiCore:
         self._cursor = None
         # socket connect
         self._socket = None
-        # pipeline
-        self.pipe = queue.Queue()
-
-    def start(self):
-        self.get_room_info()
-        self.get_room_conf()
-        self.get_db_connect()
-        self.get_socket_connect()
-        self._getting = True
-        self._danmu_enqueue_thread = threading.Thread(target=self.danmu_enqueue, daemon=True)
-        self._danmu_enqueue_thread.start()
 
     def get_room_info(self):
         response = requests.get(self.ROOM_URL, headers=self.headers, params={"room_id": self.roomid})
@@ -161,21 +148,29 @@ class DanMuJiCore:
         else:
             yield version, msg_type, message
 
-    def danmu_enqueue(self):
-        while self._getting:
-            for data in self.socket_recv():
-                self.pipe.put(self.handle(*data))
+    def start(self, pipe):
+        self.get_room_info()
+        self.get_room_conf()
+        self.get_db_connect()
+        self.get_socket_connect()
+        self._thread = threading.Thread(target=self.run, args=(pipe,))
+        self._thread.start()
 
-    # def danmu_dequeue(self):
-    #     if not self.pipe.empty():
-    #         return self.pipe.get()
+    def run(self, pipe):
+        self._running = True
+        while self._running:
+            for data in self.socket_recv():
+                pipe.put(self.handle(*data))
 
     def handle(self, version, msg_type, data):
         if msg_type == TYPE_SERVER_AUTH:
             return {"code": 0, "msg": "服务器认证通过"}
         elif msg_type == TYPE_SERVER_HEARTBEAT:
             if version == VERSION_HEARTBEAT:
-                return {"code": 1, "msg": data}
+                # struct.unpack("!I", data)[0]
+                return {"code": 1, "msg": int.from_bytes(data, "big")}
+            else:
+                return {"code": 10, "msg": data}
         elif msg_type == TYPE_SERVER_INFO:
             data = json.loads(data)
             cmd = data.get("cmd")
@@ -196,7 +191,7 @@ class DanMuJiCore:
                 d["text"] = text
                 d["date"], d["time"] = date_time.split()
                 self.save(d)
-                return {"code": 3, "msg": "", "meta": [medal, medal_level, medal_owner, d]}
+                return {"code": 3, "msg": str(d), "meta": [medal, medal_level, medal_owner, d]}
             elif cmd == "STOP_LIVE_ROOM_LIST" or "NOTICE_MSG":
                 return
             elif cmd == "ONLINE_RANK_COUNT":
@@ -211,6 +206,8 @@ class DanMuJiCore:
                 # print(data["data"]["text_large"])
             else:
                 return {"code": 8}
+        else:
+            return {"code": 9, "msg": msg_type}
 
     def send_danmu(self, msg):
         data = {"bubble": 0,
@@ -224,10 +221,10 @@ class DanMuJiCore:
                 "csrf_token": self.csrf}
         response = requests.post(self.SEND_URL, data=data, cookies={"Cookie": self.cookies})
         result = json.loads(response.content)
-        return result
         # if result["code"] != 0:
         #     {'code': 10031, 'data': [], 'message': '您发送弹幕的频率过快', 'msg': '您发送弹幕的频率过快'}
         #     return(f"发送【{msg}】失败")
+        return result
 
     def save(self, danmu):
         keys = ','.join(danmu.keys())
@@ -236,8 +233,11 @@ class DanMuJiCore:
         self._connect.commit()
 
     def stop(self):
-        self._getting = False
+        self._running = False
         self._heartbeat.cancel()
+        self.socket_send("", TYPE_CLIENT_HEARTBEAT)
+        self._thread.join()
+        self._socket.close()
         self._connect.close()
 
 
@@ -245,7 +245,13 @@ if __name__ == "__main__":
     from config import CONFIG
 
     c = DanMuJiCore(CONFIG)
-    c.start()
-    c.danmu_dequeue()
+    q = queue.Queue()
+    c.start(q)
 
-    atexit.register(c.stop)
+    def handler(pipe):
+        while True:
+            item = pipe.get()
+            if item:
+                print(item.get("msg"))
+    thread = threading.Thread(target=handler, args=(q,), daemon=True)
+    thread.start()

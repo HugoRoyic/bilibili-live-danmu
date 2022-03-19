@@ -6,7 +6,8 @@ config.py
 
 # test
 .qt_for_python/
-*.ipynb
+temp.ipynb
+temp.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
