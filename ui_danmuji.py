@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'danmujiHfFJJa.ui'
+## Form generated from reading UI file 'danmujibXbNUb.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.3
 ##
@@ -31,10 +31,8 @@ class Ui_MainWindow(object):
         MainWindow.setFont(font)
         MainWindow.setStyleSheet(u"QFrame {\n"
 "	border: 0px;\n"
-"	background-color: #191919;\n"
+"	background-color: #1b1b1b;\n"
 "}\n"
-"\n"
-"\n"
 "")
         self.MainWindowWidget = QWidget(MainWindow)
         self.MainWindowWidget.setObjectName(u"MainWindowWidget")
@@ -143,6 +141,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setContentsMargins(6, 0, 6, 0)
         self.TopFrame = QFrame(self.ContentFrame)
         self.TopFrame.setObjectName(u"TopFrame")
+        self.TopFrame.setStyleSheet(u"")
         self.TopFrame.setFrameShape(QFrame.StyledPanel)
         self.TopFrame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_4 = QHBoxLayout(self.TopFrame)
@@ -154,6 +153,7 @@ class Ui_MainWindow(object):
         font2 = QFont()
         font2.setPointSize(9)
         self.DanMuFrame.setFont(font2)
+        self.DanMuFrame.setStyleSheet(u"")
         self.DanMuFrame.setFrameShape(QFrame.StyledPanel)
         self.DanMuFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.DanMuFrame)
@@ -166,7 +166,9 @@ class Ui_MainWindow(object):
         font3.setPointSize(11)
         self.DanMuListView.setFont(font3)
         self.DanMuListView.setLayoutDirection(Qt.LeftToRight)
-        self.DanMuListView.setStyleSheet(u"color: #c2c2c2;")
+        self.DanMuListView.setStyleSheet(u"QListView::item::hover {\n"
+"	background-color: #262626;\n"
+"}")
         self.DanMuListView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.DanMuListView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.DanMuListView.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
@@ -230,12 +232,66 @@ class Ui_MainWindow(object):
 
         self.AudienceFrame = QFrame(self.TopFrame)
         self.AudienceFrame.setObjectName(u"AudienceFrame")
+        self.AudienceFrame.setStyleSheet(u"")
         self.AudienceFrame.setFrameShape(QFrame.StyledPanel)
         self.AudienceFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_5 = QVBoxLayout(self.AudienceFrame)
         self.verticalLayout_5.setSpacing(0)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.WatchedFrame = QFrame(self.AudienceFrame)
+        self.WatchedFrame.setObjectName(u"WatchedFrame")
+        self.WatchedFrame.setMinimumSize(QSize(0, 21))
+        self.WatchedFrame.setMaximumSize(QSize(16777215, 21))
+        self.WatchedFrame.setStyleSheet(u"QLabel{\n"
+"	color: #0ebeff;\n"
+"}")
+        self.WatchedFrame.setFrameShape(QFrame.StyledPanel)
+        self.WatchedFrame.setFrameShadow(QFrame.Raised)
+        self.WatchedFrame.setLineWidth(0)
+        self.horizontalLayout_7 = QHBoxLayout(self.WatchedFrame)
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(9, 3, 9, 3)
+        self.WatchedNumLabel = QLabel(self.WatchedFrame)
+        self.WatchedNumLabel.setObjectName(u"WatchedNumLabel")
+        self.WatchedNumLabel.setLineWidth(0)
+        self.WatchedNumLabel.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.horizontalLayout_7.addWidget(self.WatchedNumLabel)
+
+        self.WatchedTextLabel = QLabel(self.WatchedFrame)
+        self.WatchedTextLabel.setObjectName(u"WatchedTextLabel")
+        self.WatchedTextLabel.setLineWidth(0)
+        self.WatchedTextLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_7.addWidget(self.WatchedTextLabel)
+
+
+        self.verticalLayout_5.addWidget(self.WatchedFrame)
+
+        self.PopularityFrame = QFrame(self.AudienceFrame)
+        self.PopularityFrame.setObjectName(u"PopularityFrame")
+        self.PopularityFrame.setMinimumSize(QSize(0, 21))
+        self.PopularityFrame.setMaximumSize(QSize(16777215, 21))
+        self.PopularityFrame.setFrameShape(QFrame.StyledPanel)
+        self.PopularityFrame.setFrameShadow(QFrame.Raised)
+        self.PopularityFrame.setLineWidth(0)
+        self.horizontalLayout_8 = QHBoxLayout(self.PopularityFrame)
+        self.horizontalLayout_8.setSpacing(0)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.horizontalLayout_8.setContentsMargins(-1, 3, -1, 3)
+        self.PopularityLabel = QLabel(self.PopularityFrame)
+        self.PopularityLabel.setObjectName(u"PopularityLabel")
+        self.PopularityLabel.setStyleSheet(u"color: #2fb45a;")
+        self.PopularityLabel.setLineWidth(0)
+        self.PopularityLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_8.addWidget(self.PopularityLabel)
+
+
+        self.verticalLayout_5.addWidget(self.PopularityFrame)
+
         self.AudienceListView = QListView(self.AudienceFrame)
         self.AudienceListView.setObjectName(u"AudienceListView")
         self.AudienceListView.setMovement(QListView.Free)
@@ -247,6 +303,7 @@ class Ui_MainWindow(object):
 
         self.QueueFrame = QFrame(self.TopFrame)
         self.QueueFrame.setObjectName(u"QueueFrame")
+        self.QueueFrame.setStyleSheet(u"")
         self.QueueFrame.setFrameShape(QFrame.StyledPanel)
         self.QueueFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_6 = QVBoxLayout(self.QueueFrame)
@@ -272,6 +329,7 @@ class Ui_MainWindow(object):
 
         self.BottomFrame = QFrame(self.ContentFrame)
         self.BottomFrame.setObjectName(u"BottomFrame")
+        self.BottomFrame.setStyleSheet(u"")
         self.BottomFrame.setFrameShape(QFrame.StyledPanel)
         self.BottomFrame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_5 = QHBoxLayout(self.BottomFrame)
@@ -362,6 +420,9 @@ class Ui_MainWindow(object):
         self.MaximizeButton.setText("")
         self.CloseButton.setText("")
         self.DanMuSendButton.setText(QCoreApplication.translate("MainWindow", u"\u53d1\u9001", None))
+        self.WatchedNumLabel.setText(QCoreApplication.translate("MainWindow", u"0", None))
+        self.WatchedTextLabel.setText(QCoreApplication.translate("MainWindow", u"0\u4eba\u770b\u8fc7", None))
+        self.PopularityLabel.setText(QCoreApplication.translate("MainWindow", u"0\u4eba\u6c14", None))
         self.StatusLabel.setText("")
     # retranslateUi
 

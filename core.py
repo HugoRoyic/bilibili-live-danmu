@@ -174,8 +174,8 @@ class DanMuJiCore:
                 self.save(d)
 
                 if info[3]:
-                    # medal_level, medal, medal_owner = info[3][:3]
                     medal_level, medal = info[3][:2]
+                    # medal_level, medal, medal_owner = info[3][:3]
                     return {"code": 2,
                             "data": {"medal": f"{medal}{medal_level}",
                                      "nickname": nickname,
@@ -186,25 +186,39 @@ class DanMuJiCore:
                             "data": {"nickname": nickname,
                                      "text": text}
                             }
-            elif cmd == "STOP_LIVE_ROOM_LIST" or "NOTICE_MSG":
-                return {"code": 3}
-            elif cmd == "ONLINE_RANK_COUNT":
-                return {"code": 4}
-            elif cmd == "ONLINE_RANK_V2":
-                return {"code": 5}
-                # print(data["data"]["list"])
-            elif cmd.startswith("ONLINE_RANK_TOP"):
-                return {"code": 6}
-            elif cmd == "WATCHED_CHANGE":
-                return {"code": 7}
-                # print(data["data"]["text_large"])
+            elif cmd == "SEND_GIFT":
+                return {"code": 3,
+                        "data": {"nickname": data['data']['uname'],
+                                 "giftname": data['data']['giftName'],
+                                 "num": data['data']['num'],
+                                 'price': data['data']['price']
+                                 }}
             elif cmd == "INTERACT_WORD":
-                return {"code": 8}
-            else:
+                return {"code": 4, "data":
+                        {"info": f"{data['data']['uname']}进入了直播间"}
+                        }
+            elif cmd == "WATCHED_CHANGE":
+                return {"code": 5,
+                        "data": {"num": data["data"]["num"],
+                                 "text": data["data"]["text_large"]
+                                 }}
+            elif cmd == "ONLINE_RANK_COUNT":
+                return {"code": 6,
+                        "data": {"num": data["data"]["count"]
+                                 }}
+            elif cmd == "ONLINE_RANK_V2":
+                return {"code": 7, "data": data}
+            elif cmd.startswith("ONLINE_RANK_TOP"):
+                return {"code": 8, "data": data}
+            elif cmd == "STOP_LIVE_ROOM_LIST":
                 return {"code": 9}
+            elif cmd == "NOTICE_MSG":
+                return {"code": 9}
+            else:
+                return {"code": 10, "data": data}
         elif msg_type == TYPE_SERVER_HEARTBEAT:
             return {"code": 1,
-                    "data": {"info": f"receive hearbeat {int.from_bytes(data, 'big')}"}
+                    "data": {"text": f"{int.from_bytes(data, 'big')}人气"}
                     }
         elif msg_type == TYPE_SERVER_AUTH:
             return {"code": 0,
@@ -253,7 +267,7 @@ if __name__ == "__main__":
     def handler(pipe):
         while True:
             item = pipe.get()
-            if item:
-                print(item)
+            if item["code"] >= 3 and item.get("data"):
+                print(item["data"])
     thread = threading.Thread(target=handler, args=(q,), daemon=True)
     thread.start()
